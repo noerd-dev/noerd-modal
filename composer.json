@@ -1,0 +1,25 @@
+{
+    "name": "noerd/noerd-modal",
+    "description": "Modal system for Noerd framework",
+    "type": "library",
+    "version": "v0.1.0",
+    "license": "proprietary",
+    "require": {
+        "laravel/framework": "^11.0|^12.0",
+        "livewire/livewire": "^4.0",
+        "livewire/volt": "^v1.6.7"
+    },
+    "autoload": {
+        "psr-4": {
+            "NoerdModal\\": "src/"
+        }
+    },
+    "minimum-stability": "stable",
+    "extra": {
+        "laravel": {
+            "providers": [
+                "NoerdModal\\Providers\\NoerdModalServiceProvider"
+            ]
+        }
+    }
+}

@@ -1,6 +1,6 @@
 <?php
 
-use Livewire\Volt\Component;
+use Livewire\Component;
 use Illuminate\Support\Str;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Isolate;
@@ -22,7 +22,6 @@ new #[Isolate] class extends Component {
         $modal['show'] = true;
         $modal['topModal'] = false;
         $modal['source'] = $source;
-        // Eindeutigerer Key mit Timestamp für Uniqueness
         $modal['key'] = md5(serialize($arguments) . microtime());
 
         $iteration = 1;

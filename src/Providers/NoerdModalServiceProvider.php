@@ -4,15 +4,14 @@ namespace NoerdModal\Providers;
 
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\ServiceProvider;
-use Livewire\Volt\Volt;
+use Livewire\Livewire;
 
 class NoerdModalServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {
         $this->loadViewsFrom(__DIR__ . '/../../resources/views', 'noerd');
-
-        Volt::mount(__DIR__ . '/../../resources/views/livewire');
+        Livewire::addLocation(viewPath: __DIR__ . '/../../resources/views/components');
 
         // Publish built Vite assets
         $this->publishes([

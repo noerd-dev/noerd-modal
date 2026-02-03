@@ -29,11 +29,11 @@ Add Modal
 
 ## Usage
 
-
+Open a Livewire Component in a Modal from a button for example
 ```html
-<button
+<button type="button"
 @click="$modal('livewire-component-name', { optionalParameter: 'value1' })">
-{{ __('Add Element') }}
+    Open Modal
 </button>
 ```
 

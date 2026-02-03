@@ -27,14 +27,21 @@ Add Modal
 </head>
 ```
 
-## Usage
+## Example Usage
 
-Open a Livewire Component in a Modal from a button for example
+Opening a Livewire component in a modal via a button
 ```html
 <button type="button"
-    @click="$modal('livewire-component-name', { optionalParameter: 'value1' })">
+    @click="$modal('livewire-component-name')">
     Open Modal
 </button>
 ```
 
+Add parameters like a ID to the modal
+```html
+<button type="button"
+    @click="$modal('livewire-component-name', { exampleId: 'value1' })">
+    Open Modal
+</button>
+```
 

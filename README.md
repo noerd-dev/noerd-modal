@@ -27,4 +27,14 @@ Add Modal
 </head>
 ```
 
+## Usage
+
+
+```html
+<button
+@click="$modal('livewire-component-name', { optionalParameter: 'value1' })">
+{{ __('Add Element') }}
+</button>
+```
+
 

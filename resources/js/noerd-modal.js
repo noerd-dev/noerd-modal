@@ -40,9 +40,12 @@ document.addEventListener('clear-modal-url-params', (event) => {
 });
 
 // Clear URL parameter for the specific modal component
-// Now receives the actual parameter name directly (e.g., 'customerId')
 function clearModalUrlParams(paramName) {
     if (!paramName) return;
+
+    if(paramName === 'modelId') {
+        paramName = 'id';
+    }
 
     const url = new URL(window.location.href);
 

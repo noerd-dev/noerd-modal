@@ -36,6 +36,7 @@ new #[Isolate] class extends Component {
         }
 
         $modal['iteration'] = $iteration;
+        $modal['urlParameters'] = $this->resolveUrlParameters($modalComponent);
         $this->modals[$modal['key']] = $modal;
 
         $this->markTopModal();
@@ -99,21 +100,8 @@ new #[Isolate] class extends Component {
     {
         foreach ($this->modals as $modal) {
             if ($modal['topModal']) {
-                // Auto-detect #[Url] properties and clear them (except blacklisted)
-                try {
-                    $component = Livewire::new($modal['componentName']);
-                    $reflection = new \ReflectionClass($component);
-
-                    foreach ($reflection->getProperties() as $property) {
-                        $attributes = $property->getAttributes(Url::class);
-                        $propertyName = $property->getName();
-
-                        if (!empty($attributes) && !in_array($propertyName, self::URL_PARAM_BLACKLIST)) {
-                            $this->dispatch('clear-modal-url-params', modal: $propertyName);
-                        }
-                    }
-                } catch (\Throwable) {
-                    // Component couldn't be resolved, skip URL param cleanup
+                foreach ($modal['urlParameters'] ?? [] as $paramName) {
+                    $this->dispatch('clear-modal-url-params', modal: $paramName);
                 }
 
                 // Close the modal
@@ -125,6 +113,39 @@ new #[Isolate] class extends Component {
 
                 break;
             }
+        }
+    }
+
+    private function resolveUrlParameters(string $componentName): array
+    {
+        try {
+            $component = Livewire::new($componentName);
+            $reflection = new \ReflectionClass($component);
+            $urlParameters = [];
+
+            // Collect from #[Url] attributes on properties
+            foreach ($reflection->getProperties() as $property) {
+                $attributes = $property->getAttributes(Url::class);
+                if (!empty($attributes) && !in_array($property->getName(), self::URL_PARAM_BLACKLIST)) {
+                    $urlInstance = $attributes[0]->newInstance();
+                    $urlParameters[] = $urlInstance->as ?: $property->getName();
+                }
+            }
+
+            // Collect from queryString*() methods (trait-based query strings like queryStringNoerdDetail)
+            foreach (get_class_methods($component) as $method) {
+                if (str_starts_with($method, 'queryString') && $method !== 'queryString') {
+                    foreach ($component->$method() as $property => $config) {
+                        if (is_array($config) && !in_array($property, self::URL_PARAM_BLACKLIST)) {
+                            $urlParameters[] = $config['as'] ?? $property;
+                        }
+                    }
+                }
+            }
+
+            return array_unique($urlParameters);
+        } catch (\Throwable) {
+            return [];
         }
     }
 

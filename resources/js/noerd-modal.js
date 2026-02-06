@@ -43,10 +43,6 @@ document.addEventListener('clear-modal-url-params', (event) => {
 function clearModalUrlParams(paramName) {
     if (!paramName) return;
 
-    if(paramName === 'modelId') {
-        paramName = 'id';
-    }
-
     const url = new URL(window.location.href);
 
     if (url.searchParams.has(paramName)) {

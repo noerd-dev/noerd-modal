@@ -170,7 +170,7 @@ describe('PublishExampleCommand', function (): void {
             ->assertSuccessful();
 
         $newContent = File::get($this->routeFile);
-        expect(substr_count($newContent, 'noerd-example-modal'))->toBe(1);
+        expect(mb_substr_count($newContent, 'noerd-example-modal'))->toBe(1);
     });
 
     it('copies correct source files', function (): void {

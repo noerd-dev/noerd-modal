@@ -35,7 +35,7 @@
          x-transition:leave-start="translate-y-0"
          x-transition:leave-end="translate-y-full"
     >
-        <div @class([
+        <div x-trap.noscroll="open" @class([
             'bg-white mx-auto shadow-sm relative',
             'max-w-full h-[100dvh] rounded-none',
             'sm:max-w-full sm:h-[calc(100dvh-3.5rem)] sm:mt-14 sm:rounded-none' => $isFullscreen,
@@ -75,7 +75,8 @@
                 </div>
             </button>
 
-            <div x-data="{ isModal: true}" class="p-6 pt-12">
+            <div x-data="{ isModal: true}" class="p-6 pt-12"
+                 x-effect="if(open) setTimeout(() => { const el = $el.querySelector('input:not([type=hidden]):not([disabled]), textarea:not([disabled]), select:not([disabled])'); if(el) el.focus(); }, 150)">
                 {{ $slot }}
             </div>
         </div>

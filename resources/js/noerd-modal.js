@@ -4,6 +4,7 @@ document.addEventListener('alpine:init', () => {
         return (component, args = {}, source = null) => {
             const params = { modalComponent: component, arguments: args };
             if (source) params.source = source;
+            showModalLoading();
             Livewire.dispatch('noerdModal', params);
         };
     });
@@ -12,9 +13,33 @@ document.addEventListener('alpine:init', () => {
     Alpine.store('app', {
         currentId: null,
         modalOpen: false,
+        modalLoading: false,
+        _modalLoadingTimeout: null,
         setId(id) {
             this.currentId = id;
         }
+    });
+});
+
+function showModalLoading() {
+    const store = Alpine.store('app');
+    store.modalLoading = true;
+    clearTimeout(store._modalLoadingTimeout);
+    store._modalLoadingTimeout = setTimeout(() => {
+        store.modalLoading = false;
+    }, 10000);
+}
+
+function hideModalLoading() {
+    const store = Alpine.store('app');
+    store.modalLoading = false;
+    clearTimeout(store._modalLoadingTimeout);
+}
+
+// Catch noerdModal events dispatched from PHP ($this->dispatch)
+document.addEventListener('livewire:init', () => {
+    Livewire.on('noerdModal', () => {
+        showModalLoading();
     });
 });
 
@@ -24,6 +49,7 @@ document.addEventListener('set-app-id', (event) => {
 
 document.addEventListener('modal-closed-global', () => {
     Alpine.store('app').modalOpen = false;
+    hideModalLoading();
 });
 
 document.addEventListener('keydown', (event) => {

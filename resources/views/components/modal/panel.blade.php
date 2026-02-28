@@ -43,7 +43,7 @@
         ])>
 
             <!-- Fullscreen Toggle Button (nur Desktop) -->
-            <button wire:click.prevent="toggleFullscreen" type="button" class="hidden sm:block absolute right-0 top-4 pt-2 pr-16 mx-auto my-auto">
+            <button wire:click.prevent="toggleFullscreen" type="button" class="hidden focus:outline-none sm:block absolute right-0 top-4 pt-2 pr-16 mx-auto my-auto">
                 <div class="hover:bg-gray-100 z-50 hover:text-black border rounded-sm p-1.5 text-gray-600 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2">
                     <span class="sr-only">Toggle fullscreen</span>
                     @if($isFullscreen)
@@ -62,7 +62,7 @@
 
             <!-- Close Button -->
             <button @click="show = !show" wire:click.prevent="$dispatch('closeTopModal')" type="button" @class([
-                'absolute right-0 top-4 pt-2 pr-6 mx-auto my-auto',
+                'absolute right-0 top-4 pt-2 pr-6 mx-auto my-auto focus:outline-none',
         ])>
                 <div
                     class="hover:bg-gray-100 z-50 hover:text-black border rounded-sm p-1.5 text-gray-600 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2">
